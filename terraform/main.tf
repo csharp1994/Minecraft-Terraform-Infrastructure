@@ -1,3 +1,8 @@
+resource "tls_private_key" "private_key" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "aws_security_group" "server_security_group" {
   name = "Server security group"
 }
@@ -26,9 +31,18 @@ resource "aws_security_group_rule" "egress_rules" {
   security_group_id = aws_security_group.server_security_group.id
 }
 
-resource "aws_key_pair" "home" {
-  key_name = "Home"
-  public_key = var.owner_public_key
+resource "aws_key_pair" "generated_key_pair" {
+  key_name = "aws_keys_pairs"
+
+  # Public Key
+  public_key = tls_private_key.private_key.public_key_openssh
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      echo '${tls_private_key.private_key.private_key_pem}' > aws_key_pairs.pem
+      chmod 400 aws_key_pairs.pem
+    EOT
+  }
 }
 
 resource "aws_instance" "minecraft_server" {
@@ -36,7 +50,7 @@ resource "aws_instance" "minecraft_server" {
     instance_type = var.instance_type
     vpc_security_group_ids = [aws_security_group.server_security_group.id]
     associate_public_ip_address = true
-    key_name = aws_key_pair.home.key_name
+    key_name = aws_key_pair.generated_key_pair.key_name
 
     user_data = <<-EOF
      #!/bin/bash
