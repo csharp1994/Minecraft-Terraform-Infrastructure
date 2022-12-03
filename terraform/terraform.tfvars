@@ -1,15 +1,17 @@
 instance_type = "t2.small" // TODO parameterize
 
+minecraft_server_url = "https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar"
+
 sg_ingress_rules = [ {
-      cidr_blocks = ["${var.owner_ip}/32"]
-      description = "SSH Ingress"
+      cidr_blocks = ["24.98.230.114/32"]
+      description = "SSH ingress traffic from server owner"
       from_port = 22
       protocol = "tcp"
       to_port = 22
     },
     {
       cidr_blocks = ["0.0.0.0/0"]
-      description = "Minecraft Ingress"
+      description = "Minecraft ingress traffic from players"
       from_port = 25565
       protocol = "tcp"
       to_port = 25565
