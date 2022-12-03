@@ -15,7 +15,7 @@ This is a terraform project that anyone can use to quickly host a Minecraft serv
 - Open any terminal to the terraform folder in this project
 - Run `terraform init`
   - Expected output:
-  - ![preview](../graphics/terraform-init.PNG)
+  - ![preview](/graphics/terraform-init.PNG)
 - Run `terraform plan -var-file="terraform.tfvars"`
   - Expected output:
   - ![preview](../graphics/terraform-plan.PNG)
