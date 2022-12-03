@@ -1,9 +1,24 @@
 data "aws_ami" "linux" {
     most_recent = true
+    
+    filter {
+      name = "virtualization-type"
+      values = ["hvm"]
+    }
 
     filter {
-        name = "name"
-        values = ["ami-0b0dcb5067f052a63"] // TODO change filter to not use hardcoded ID
+      name = "architecture"
+      values = ["x86_64"]
+    }
+
+    filter {
+      name = "root-device-type"
+      values = ["ebs"]
+    }
+
+    filter {
+      name = "owner-alias"
+      values = ["amazon"]
     }
 }
 
@@ -18,7 +33,7 @@ resource "aws_security_group_rule" "ingress_rules" {
   from_port = var.sg_ingress_rules[count.index].from_port
   to_port = var.sg_ingress_rules[count.index].to_port
   protocol = var.sg_ingress_rules[count.index].protocol
-  cidr_blocks       = [var.sg_ingress_rules[count.index].cidr_block]
+  cidr_blocks       = var.sg_ingress_rules[count.index].cidr_blocks
   description       = var.sg_ingress_rules[count.index].description
   security_group_id = aws_security_group.server_security_group.id
 }
@@ -27,10 +42,10 @@ resource "aws_security_group_rule" "egress_rules" {
   count = length(var.sg_egress_rules)
 
   type = "ingress"
-  from_port = var.egress_rules[count.index].from_port
+  from_port = var.sg_egress_rules[count.index].from_port
   to_port = var.sg_egress_rules[count.index].to_port
   protocol = var.sg_egress_rules[count.index].protocol
-  cidr_blocks       = [var.sg_egress_rules[count.index].cidr_block]
+  cidr_blocks       = var.sg_egress_rules[count.index].cidr_blocks
   description       = var.sg_egress_rules[count.index].description
   security_group_id = aws_security_group.server_security_group.id
 }

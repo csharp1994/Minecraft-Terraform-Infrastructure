@@ -29,7 +29,7 @@ variable "sg_ingress_rules" {
         from_port   = number
         to_port     = number
         protocol    = string
-        cidr_blocks = string
+        cidr_blocks = list(string)
         description = string
     }))
 }
@@ -40,7 +40,7 @@ variable "sg_egress_rules" {
         from_port   = number
         to_port     = number
         protocol    = string
-        cidr_blocks = string
+        cidr_blocks = list(string)
         description = string
     }))
 }
