@@ -7,7 +7,7 @@ owner_ip = "24.98.230.114" // TODO parameterize
 region = "us-east-1" // TODO parameterize
 
 sg_ingress_rules = [ {
-      cidr_blocks = ["24.98.230.114/32"] // TODO refactor so I can use a var here
+      cidr_blocks = ["24.98.230.114/32"] // TODO parameterized
       description = "SSH ingress traffic from server owner"
       from_port = 22
       protocol = "tcp"
