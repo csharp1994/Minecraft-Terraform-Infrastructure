@@ -19,6 +19,16 @@ resource "aws_security_group_rule" "ingress_rules" {
   security_group_id = aws_security_group.server_security_group.id
 }
 
+resource "aws_security_group_rule" "ssh_ingress_rule" { 
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["${var.owner_ip}/32"]
+  description       = "Security group rule for SSH into the server by the server owner"
+  security_group_id = aws_security_group.server_security_group.id
+}
+
 resource "aws_security_group_rule" "egress_rules" {
   count = length(var.sg_egress_rules)
 
@@ -34,7 +44,6 @@ resource "aws_security_group_rule" "egress_rules" {
 resource "aws_key_pair" "generated_key_pair" {
   key_name = "aws_keys_pairs"
 
-  # Public Key
   public_key = tls_private_key.private_key.public_key_openssh
 
   provisioner "local-exec" {

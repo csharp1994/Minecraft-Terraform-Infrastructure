@@ -4,17 +4,17 @@ variable "region" {
 }
 
 variable "owner_ip" {
-  description = "The server's owner's IP address. The server can be administered from this IP address."
+  description = "The server's owner's IP address. You can SSH into the server from this IP. https://www.whatsmyip.org/"
   type        = string
 }
 
 variable "minecraft_server_url" {
-  description = "The minecraft server download link is available at: https://www.minecraft.net/en-us/download/server/."
+  description = "The minecraft server download link is available at: https://www.minecraft.net/en-us/download/server/"
   type        = string
 }
 
 variable "instance_type" {
-  description = "EC2 instance type"
+  description = "EC2 instance type. 't2.small' is recommended"
   type        = string
 }
 
